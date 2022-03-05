@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import Counter from "../components/Counter"
 import Donut from "../components/Donut"
 import Logo from "../components/Logo"
 import Print from "../components/Print"
@@ -7,9 +8,10 @@ import useInterval from "../hooks/useInterval"
 
 
 export default () => {
-    const [humidity, setHumidity] = useState(Math.random() * 100)
+    const [humidity, setHumidity] = useState({ old: 0, now: Math.random() * 70 + 30 })
+
     useInterval(() => {
-        setHumidity(Math.random() * 70+30)
+        setHumidity({ old: humidity.now, now: Math.random() * 70 + 30 })
     }, 2000)
 
     return (
@@ -91,20 +93,31 @@ export default () => {
                 {/* <div className="absolute w-full h-full bg-gradient-to-t from-white via-transparent to-transparent"></div> */}
                 <Wave2></Wave2>
             </div>
-            <div className="container">
-                <div className="w-72 my-10 mx-auto">
-                    <Donut data={[
-                        {
-                            label: 'Data',
-                            value: humidity,
-                            color: 'DeepSkyBlue'
-                        },
-                        {
-                            label: 'Data',
-                            value: 100-humidity,
-                            color: 'transparent'
-                        },
-                    ]} config={{ label: false }}></Donut>
+            <div className="container shadow-xl rounded border border-slate-100">
+                <div className="w-72 flex justify-center items-center my-10 mx-auto">
+                    <div className="absolute flex flex-col justify-center items-center ml-1 w-32 text-sky-400">
+                        <div className="text-3xl ml-1 font-bold">
+                            <Counter from={humidity.old} to={humidity.now} /><span>%</span>
+                        </div>
+                        <div>
+                            humidity
+                        </div>
+                    </div>
+                    <Donut
+                        data={[
+                            {
+                                label: 'Data',
+                                value: humidity.now,
+                                color: 'DeepSkyBlue'
+                            },
+                            {
+                                label: 'Data',
+                                value: 100 - humidity.now,
+                                color: 'transparent'
+                            },
+                        ]}
+                        config={{ label: false }}
+                    ></Donut>
                 </div>
             </div>
             <footer>
