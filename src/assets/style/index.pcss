@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.content{
+    @apply w-full max-w-5xl mx-auto
+}
+
+.container{
+    @apply max-w-6xl w-full mx-auto;
+}
+
+.md-container{
+    @apply max-w-4xl w-full mx-auto;
+}
+footer{
+    @apply bg-slate-800 text-white;
+}
+footer>*{
+    @apply content py-10;
+}
+.button-r,.button-x{
+    @apply transition-all duration-200;
+}

@@ -1,0 +1,26 @@
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+.wave {
+    aspect-ratio: 1440/320;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.wave1 {
+    background-image: url('../wave.svg');
+}
+
+.logo {
+    border-color: #d1d4d9;
+    background: white;
+}
+.button-x:hover{
+    border-radius: 0px;
+}
+.button-r:hover{
+    border-radius: 40px;
+}
