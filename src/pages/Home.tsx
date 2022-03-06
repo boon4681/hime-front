@@ -10,10 +10,32 @@ import useInterval from "../hooks/useInterval"
 
 export default () => {
     const [humidity, setHumidity] = useState({ old: 0, now: Math.random() * 70 + 30 })
-
+    const [data, setData] = useState(
+        {
+            dataset: [
+                {
+                    data: [...new Array(10)].map((a, i) => {
+                        return { "x": i * 10, "y": Math.random() * 2 + 50 };
+                    }),
+                    config: {
+                        color: "salmon"
+                    }
+                },
+                {
+                    data: [...new Array(20)].map((a, i) => {
+                        return { "x": i * 10, "y": Math.random() * 2 + 50 };
+                    }),
+                }
+            ],
+            x: (d: any) => d.x,
+            y: (d: any) => d.y
+        }
+    )
     useInterval(() => {
         setHumidity({ old: humidity.now, now: Math.random() * 70 + 30 })
-    }, 2000)
+        data.dataset[0].data.push({ "x": data.dataset[0].data.length * 10, "y": Math.random() * 25 + 75 })
+        setData(data)
+    }, 1000)
 
     return (
         <>
@@ -127,7 +149,9 @@ export default () => {
                         ></Donut>
                     </div>
                     <div className="w-96">
-                        <Line></Line>
+                        <Line dataset={
+                            data
+                        }></Line>
                     </div>
                 </div>
             </div>

@@ -128,13 +128,14 @@ export default class Donut extends React.Component<{ data: data, config?: config
             .selectAll('g')
             //@ts-ignore
             .data(pie(radius)(this.props.data))
-            .join(this.enter, (update: any) => {
-                update.select("path")
-            }, (exit: any) => {
-                exit.call((exit: any) => {
-                    exit.transition().duration(1000).style("opacity",0).remove()
+            .join(this.enter,
+                (update: any) => {
+                    update.select("path")
+                }, (exit: any) => {
+                    exit.call((exit: any) => {
+                        exit.transition().duration(1000).style("opacity", 0).remove()
+                    })
                 })
-            })
         //@ts-ignore
         this.groupsArcs = this.group.selectAll('g')
         this.animate()

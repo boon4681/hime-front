@@ -1,10 +1,6 @@
 import React from "react";
 import * as d3 from "d3"
 
-const generateRanNum = (size: number) => {
-    return [...new Array(size)].map(a => Math.random() * 25 + 75)
-}
-
 type config = {
     color?: string,
     area?: boolean
@@ -21,52 +17,40 @@ type dataset = {
 }
 
 const strokeWidth = 2
-export default class Line extends React.Component {
+export default class Line extends React.Component<{ dataset: dataset }> {
     svg: React.RefObject<SVGSVGElement> = React.createRef<SVGSVGElement>()
-    componentDidMount() {
-        //@ts-ignore
-        const svg = d3.select(this.svg.current)
-        let input: dataset = {
-            dataset: [
-                {
-                    data: [...new Array(100)].map((a, i) => {
-                        return { "x": i * 10, "y": Math.random() * 25 + 75 };
-                    }),
-                    config: {
-                        color: "salmon"
-                    }
-                },
-                {
-                    data: [...new Array(100)].map((a, i) => {
-                        return { "x": i * 10, "y": Math.random() * 25 + 75 };
-                    })
-                }
-            ],
-            x: (d: any) => d.x,
-            y: (d: any) => d.y
-        }
-        const data = input.dataset
-        const color = (d: any) => (d.config) ? (d.config.color) ? d.config.color : "#85929E" : "#85929E"
-        const areas = (d: any) => (d.config) ? (d.config.area) ? d.config.area : false : false
+    lines: any
+    areas: any
+    get = ({ data, input }: any) => {
         //@ts-ignore
         const maxX = Math.max(...data.map(a => a.data.map(input.x)).flat(Infinity))
         //@ts-ignore
         const maxY = Math.max(...data.map(a => a.data.map(input.y)).flat(Infinity))
         const x = d3.scaleLinear().domain([0, maxX]).range([0, 200])
-        const y = d3.scaleLinear().domain([0, maxY]).range([100, 0])
+        const y = d3.scaleLinear().domain([0, maxY + strokeWidth]).range([100, 0])
         const line = d3.line()
             //@ts-ignore
             .x(d => x(d.x))
             //@ts-ignore
             .y(d => y(d.y))
-            .curve(d3.curveBasis)
+            .curve(d3.curveCardinal)
         const area = d3.area()
             //@ts-ignore
             .x(d => x(d.x))
             .y0(100)
             //@ts-ignore
             .y1(d => y(d.y))
-            .curve(d3.curveBasis)
+            .curve(d3.curveCardinal)
+        return { line, area, maxX, maxY }
+    }
+    componentDidMount() {
+        //@ts-ignore
+        const svg = d3.select(this.svg.current)
+        let input: dataset = this.props.dataset
+        const data = input.dataset
+        const color = (d: any) => (d.config) ? (d.config.color) ? d.config.color : "#85929E" : "#85929E"
+        const areas = (d: any) => (d.config) ? (d.config.area) ? d.config.area : false : false
+        const { area, line } = this.get({ data, input })
         const clip = svg
             .append("clipPath")
             .attr("id", "animate")
@@ -77,7 +61,7 @@ export default class Line extends React.Component {
             .selectAll("g")
             .data(data)
             .join("g")
-        const path = group
+        this.lines = group
             .append("path")
             .attr("fill", "none")
             .attr("stroke", color)
@@ -87,7 +71,7 @@ export default class Line extends React.Component {
                 return line(d.data)
             })
             .attr("clip-path", "url(#animate)")
-        const path2 = group.append("path")
+        this.areas = group.append("path")
             .attr("fill", color)
             .style("opacity", 0.7)
             //@ts-ignore
@@ -97,6 +81,28 @@ export default class Line extends React.Component {
             })
             .attr("clip-path", "url(#animate)")
         clip.transition().duration(2000).attr("width", 200)
+    }
+    componentDidUpdate() {
+        let input: dataset = this.props.dataset
+        const data = input.dataset
+        //@ts-ignore
+        const svg = d3.select(this.svg.current)
+        const { area, line } = this.get({ data, input })
+        const group = svg
+            .selectAll("g")
+            .data(data)
+            .join("g", (e: any) => {
+                e.select("path")
+                    .transition()
+                    .duration(500)
+                    //@ts-ignore
+                    .attr("d", d => {
+                        //@ts-ignore
+                        return line(d.data)
+                    })
+                return e
+            })
+
     }
     render(): React.ReactNode {
         return (
