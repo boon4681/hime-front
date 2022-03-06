@@ -126,7 +126,9 @@ export default () => {
                             config={{ label: false }}
                         ></Donut>
                     </div>
-                    <Line></Line>
+                    <div className="w-96">
+                        <Line></Line>
+                    </div>
                 </div>
             </div>
             <footer>
