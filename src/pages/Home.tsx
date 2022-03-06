@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import Counter from "../components/Counter"
 import Donut from "../components/Donut"
+import Line from "../components/Line"
 import Logo from "../components/Logo"
 import Print from "../components/Print"
 import Wave2 from "../components/Wave2"
@@ -18,10 +19,10 @@ export default () => {
         <>
             <div className="bg-slate-50 pt-3">
                 <div className="container">
-                    <nav className="p-2 flex items-center justify-between">
+                    <nav className="p-2 px-5 flex items-center justify-between">
                         <Logo></Logo>
                         <div className="flex items-center justify-between">
-                            <a href="/login" className="button-r group flex items-center rounded-md border border-slate-500 text-slate-500 hover:border-slate-400 hover:text-slate-400 text-sm font-medium px-4 py-2 shadow-sm mx-5">
+                            <a href="/login" className="button-r group flex items-center rounded-md border bg-slate-50 border-slate-500 text-slate-500 hover:border-slate-400 hover:text-slate-400 text-sm font-medium px-4 py-2 shadow-sm mx-5">
                                 Login
                             </a>
                             <a href="/signup" className="hover:bg-slate-700 button-r group flex items-center rounded-md bg-slate-800 text-white text-sm font-medium pl-3.5 pr-6 py-2.5 shadow-sm">
@@ -55,7 +56,7 @@ export default () => {
                         </div>
                     </div>
                 </div>
-                <div className="relative flex justify-center -mt-12">
+                <div className="relative flex justify-center mt-0 lg:-mt-12">
                     <div className="absolute w-full h-full">
                         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
                             <defs>
@@ -93,31 +94,39 @@ export default () => {
                 {/* <div className="absolute w-full h-full bg-gradient-to-t from-white via-transparent to-transparent"></div> */}
                 <Wave2></Wave2>
             </div>
-            <div className="container shadow-xl rounded border border-slate-100">
-                <div className="w-72 flex justify-center items-center my-10 mx-auto">
-                    <div className="absolute flex flex-col justify-center items-center ml-1 w-32 text-sky-400">
-                        <div className="text-3xl ml-1 font-bold">
-                            <Counter from={humidity.old} to={humidity.now} /><span>%</span>
-                        </div>
-                        <div>
-                            humidity
-                        </div>
+            <div className="px-6">
+                <div className="container main-shadow my-10 rounded border border-slate-100" style={{ background: '#fefefe' }}>
+                    <div className="w-full h-10 border-b window-head" style={{ background: '#f7fafc' }}>
+                        <div></div>
+                        <div></div>
+                        <div></div>
                     </div>
-                    <Donut
-                        data={[
-                            {
-                                label: 'Data',
-                                value: humidity.now,
-                                color: 'DeepSkyBlue'
-                            },
-                            {
-                                label: 'Data',
-                                value: 100 - humidity.now,
-                                color: 'transparent'
-                            },
-                        ]}
-                        config={{ label: false }}
-                    ></Donut>
+                    <div className="w-72 flex justify-center items-center my-10 mx-auto">
+                        <div className="absolute flex flex-col justify-center items-center ml-1 w-32 text-sky-400">
+                            <div className="text-3xl ml-1 font-bold">
+                                <Counter from={humidity.old} to={humidity.now} /><span>%</span>
+                            </div>
+                            <div>
+                                humidity
+                            </div>
+                        </div>
+                        <Donut
+                            data={[
+                                {
+                                    label: 'Data',
+                                    value: humidity.now,
+                                    color: 'DeepSkyBlue'
+                                },
+                                {
+                                    label: 'Data',
+                                    value: 100 - humidity.now,
+                                    color: 'transparent'
+                                },
+                            ]}
+                            config={{ label: false }}
+                        ></Donut>
+                    </div>
+                    <Line></Line>
                 </div>
             </div>
             <footer>

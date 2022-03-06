@@ -18,9 +18,23 @@ body {
     border-color: #d1d4d9;
     background: white;
 }
-.button-x:hover{
+
+.button-x:hover {
     border-radius: 0px;
 }
-.button-r:hover{
+
+.button-r:hover {
     border-radius: 40px;
+}
+
+.main-shadow {
+    box-shadow: 2px 3px 5px 0px #00000014;
+}
+
+.window-head>* {
+    border-radius: 100%;
+    width: 14px;
+    height: 14px;
+    margin-right: 6px;
+    background: #e2e8f0;
 }
