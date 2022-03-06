@@ -18,7 +18,8 @@ export default () => {
                         return { "x": i * 10, "y": Math.random() * 2 + 50 };
                     }),
                     config: {
-                        color: "salmon"
+                        color: "salmon",
+                        area: true
                     }
                 },
                 {

@@ -17,6 +17,9 @@ type dataset = {
 }
 
 const strokeWidth = 2
+const color = (d: any) => (d.config) ? (d.config.color) ? d.config.color : "#85929E" : "#85929E"
+const areas = (d: any) => (d.config) ? (d.config.area) ? d.config.area : false : false
+
 export default class Line extends React.Component<{ dataset: dataset }> {
     svg: React.RefObject<SVGSVGElement> = React.createRef<SVGSVGElement>()
     lines: any
@@ -48,8 +51,6 @@ export default class Line extends React.Component<{ dataset: dataset }> {
         const svg = d3.select(this.svg.current)
         let input: dataset = this.props.dataset
         const data = input.dataset
-        const color = (d: any) => (d.config) ? (d.config.color) ? d.config.color : "#85929E" : "#85929E"
-        const areas = (d: any) => (d.config) ? (d.config.area) ? d.config.area : false : false
         const { area, line } = this.get({ data, input })
         const clip = svg
             .append("clipPath")
@@ -63,6 +64,7 @@ export default class Line extends React.Component<{ dataset: dataset }> {
             .join("g")
         this.lines = group
             .append("path")
+            .attr("id", "line")
             .attr("fill", "none")
             .attr("stroke", color)
             .attr('stroke-width', strokeWidth * 0.8)
@@ -71,10 +73,11 @@ export default class Line extends React.Component<{ dataset: dataset }> {
                 return line(d.data)
             })
             .attr("clip-path", "url(#animate)")
-        this.areas = group.append("path")
+        this.areas = group
+            .append("path")
+            .attr("id", "area")
             .attr("fill", color)
             .style("opacity", 0.7)
-            //@ts-ignore
             .attr("d", d => {
                 //@ts-ignore
                 return (areas(d)) ? area(d.data) : ""
@@ -92,13 +95,21 @@ export default class Line extends React.Component<{ dataset: dataset }> {
             .selectAll("g")
             .data(data)
             .join("g", (e: any) => {
-                e.select("path")
+                e.select("#line")
                     .transition()
                     .duration(500)
                     //@ts-ignore
                     .attr("d", d => {
                         //@ts-ignore
                         return line(d.data)
+                    })
+                e.select("#area")
+                    .transition()
+                    .duration(500)
+                    //@ts-ignore
+                    .attr("d", d => {
+                        //@ts-ignore
+                        return (areas(d)) ? area(d.data) : ""
                     })
                 return e
             })
