@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import Counter from "../components/Counter"
 import Donut from "../components/Donut"
-import Line from "../components/Line"
+import Line from "../components/Line.Archive"
 import Logo from "../components/Logo"
 import Print from "../components/Print"
 import Wave2 from "../components/Wave2"
